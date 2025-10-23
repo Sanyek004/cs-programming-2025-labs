@@ -3,15 +3,15 @@ using namespace std;
 
 int main() {
     long long n;
-    if (!(cin >> n)) return 0;      // читаем верхнюю границу
+    cin >> n;
 
-    long long a = 0, b = 1;         // стартовая пара: 0, 1
+    long long a = 0, b = 1;
     while (a <= n) {
-        cout << a << ' ';           // выводим текущее число
-        long long next = a + b;     // считаем следующее
-        a = b;                      // сдвигаем пару
-        b = next;
+        cout << a << " ";
+        long long c = a + b;
+        a = b;
+        b = c;
     }
-    cout << '\n';
+
     return 0;
 }
