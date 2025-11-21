@@ -8,7 +8,7 @@ int main() {
     
     cout << "Enter password: ";
     
-    getline(std::cin, password);
+    getline(cin, password);
 
     // Флаги для отслеживания каждого условия
     bool hasUpper = false;
@@ -43,12 +43,12 @@ int main() {
 
    
     if (goodLength && hasUpper && hasLower && hasDigit && hasSpecial) {
-        std::cout << "Password is secure." << std::endl;
+        cout << "Password is secure." << std::endl;
     } else {
         // Если пароль ненадежный, собираем строку с ошибками
-        std::cout << "Password is not secure: ";
+        cout << "Password is not secure: ";
         
-        std::string errors;
+        string errors;
 
         if (!goodLength) {
             errors += "length is less than 8 symbols";
@@ -80,7 +80,7 @@ int main() {
         }
         
         // Выводим собранные ошибки
-        cout << errors << "." << std::endl;
+        cout << errors << "." << endl;
     }
 
     return 0;
