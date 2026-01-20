@@ -7,6 +7,7 @@ using namespace std;
 double task_1(double num, char type_now, char type_translate);
 double task_2(double sum, double age);
 vector<unsigned int> task_3(int begin, int end);
+vector<vector<int>> task_4(int rows_1, int cols_1, int rows_2, int cols_2, vector<int> data_matrix_1, vector<int> data_matrix_2);
 
 double task_1(double num, char type_now, char type_translate)
 {
@@ -123,12 +124,76 @@ vector<unsigned int> task_3(int begin, int end)
 
 }
 
+vector<vector<int>> task_4(int rows_1, int cols_1, int rows_2, int cols_2, vector<int> data_matrix_1, vector<int> data_matrix_2)
+{
+    vector<vector<int>> result_matrix(rows_1, vector<int>(cols_1));
+
+    if (rows_1 != rows_2 || cols_1 != cols_2)
+    {
+        cout << "Error! Not similar rows and cols!" << endl;
+
+        return result_matrix;
+    }
+
+
+    if (rows_1 < 2 || cols_1 < 2)
+    {
+        cout << "Error! Matrix lower than 2x2!" << endl;
+        return result_matrix;
+    }
+
+
+    for (int i = 0; i < rows_1; i++)
+    {
+        for (int j = 0; j < cols_1; j++)
+        {
+            int flat_index = i * cols_1 + j;
+
+            result_matrix[i][j] = data_matrix_1[flat_index] + data_matrix_2[flat_index];
+        }
+    }
+
+    cout << "Matrix 1:" << endl;
+    for (auto it_data_m1 = data_matrix_1.begin(); it_data_m1 != data_matrix_1.end(); it_data_m1++)
+    {
+        cout << *it_data_m1 << " ";
+    }
+
+    cout << endl;
+
+    cout << "Matrix 2:" << endl;
+    for (auto it_data_m2 = data_matrix_2.begin(); it_data_m2 != data_matrix_2.end(); it_data_m2++)
+    {
+        cout << *it_data_m2 << " ";
+    }
+
+    cout << endl;
+
+    cout << "Result: " << endl;
+
+    for (auto it_row = result_matrix.begin(); it_row != result_matrix.end(); it_row++)
+    {
+        for (auto it_col = it_row->begin(); it_col != it_row->end(); it_col++)
+        {
+            cout << *it_col << " ";
+        }
+
+        cout << endl;
+    }
+
+    return result_matrix;
+}
+
 
 int main()
 {
     double res_1 = task_1(12, 's', 'm');
     double res_2 = task_2(200000, 8);
     task_3(0,1);
+    
+    vector<int> res_4_1 = { 2,5,5,3 };
+    vector<int> res_4_2 = { 5,2,4,1 };
+    task_4(2, 2, 2, 2, res_4_1, res_4_2);
 
     cout << "Result TASK_1: " << res_1 << endl;
     cout << "Result TASK_2: " << fixed << setprecision(2) << res_2 << endl;
