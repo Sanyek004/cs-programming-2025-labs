@@ -2,12 +2,14 @@
 #include <cmath>
 #include <iomanip>
 #include <vector>
+#include <string>
 using namespace std;
 
 double task_1(double num, char type_now, char type_translate);
 double task_2(double sum, double age);
 vector<unsigned int> task_3(int begin, int end);
 vector<vector<int>> task_4(int rows_1, int cols_1, int rows_2, int cols_2, vector<int> data_matrix_1, vector<int> data_matrix_2);
+void task_5(string input);
 
 double task_1(double num, char type_now, char type_translate)
 {
@@ -184,9 +186,69 @@ vector<vector<int>> task_4(int rows_1, int cols_1, int rows_2, int cols_2, vecto
     return result_matrix;
 }
 
+// Функция подсчета реальных символов (глифов) в UTF-8
+vector<string> split_utf8(const string& str) {
+    vector<string> symbols;
+    for (size_t i = 0; i < str.length(); ) {
+        unsigned char c = str[i];
+        size_t char_len = 0;
+
+        // Определение длины символа UTF-8 по первому байту
+        if ((c & 0x80) == 0) char_len = 1;        // ASCII (английский)
+        else if ((c & 0xE0) == 0xC0) char_len = 2; // Кириллица и др.
+        else if ((c & 0xF0) == 0xE0) char_len = 3;
+        else if ((c & 0xF8) == 0xF0) char_len = 4;
+        else char_len = 1; // Если байт поврежден, считаем как 1
+
+        // Добавляем кусочек строки (один символ) в вектор
+        symbols.push_back(str.substr(i, char_len));
+        i += char_len;
+    }
+    return symbols;
+}
+
+// Вспомогательная функция для приведения к нижнему регистру
+string to_lower_utf8(string s) {
+    // Если это английская буква A-Z
+    if (s.size() == 1 && s[0] >= 'A' && s[0] <= 'Z') {
+        s[0] = s[0] + 32;
+    }
+    return s;
+}
+
+void task_5(string input)
+{
+    // 1. Разбиваем на символы
+    vector<string> raw_chars = split_utf8(input);
+
+    // 2. Чистим: убираем пробелы и приводим к нижнему регистру 
+    vector<string> clean_chars;
+    for (const string& s : raw_chars) 
+    {
+        if (s != " ") // Игнорируем пробелы
+        { 
+            clean_chars.push_back(to_lower_utf8(s));
+        }
+    }
+
+    // 3. Создаем копию и переворачиваем
+    vector<string> reversed_chars = clean_chars;
+    reverse(reversed_chars.begin(), reversed_chars.end());
+
+    // 4. Сравниваем содержимое
+    if (clean_chars == reversed_chars) {
+        cout << "Да, это палиндром: " << input << endl;
+    }
+    else {
+        cout << "Нет, это не палиндром: " << input << endl;
+    }
+}
+
 
 int main()
 {
+    setlocale(LC_ALL, "");
+
     double res_1 = task_1(12, 's', 'm');
     double res_2 = task_2(200000, 8);
     task_3(0,1);
@@ -194,6 +256,8 @@ int main()
     vector<int> res_4_1 = { 2,5,5,3 };
     vector<int> res_4_2 = { 5,2,4,1 };
     task_4(2, 2, 2, 2, res_4_1, res_4_2);
+
+    task_5("Алфавитный порядок");
 
     cout << "Result TASK_1: " << res_1 << endl;
     cout << "Result TASK_2: " << fixed << setprecision(2) << res_2 << endl;
